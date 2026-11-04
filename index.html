@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calorie Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-inner">
+        <div class="header-title-group">
+          <div class="logo-icon" aria-hidden="true">&#127822;</div>
+          <div>
+            <h1>Calorie Tracker</h1>
+            <p class="header-subtitle">Log your daily meals and track nutrition goals</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <!-- Date Navigation -->
+      <nav class="date-nav-card" aria-label="Date navigation">
+        <div class="date-controls">
+          <button type="button" id="prev-day-btn" class="btn btn-secondary date-btn" aria-label="Go to previous day">
+            &#8592; Prev Day
+          </button>
+          
+          <div class="date-display-wrapper">
+            <label for="date-picker-input" class="sr-only">Choose date</label>
+            <input type="date" id="date-picker-input" class="date-picker-input">
+            <h2 id="current-date-heading" class="current-date-heading">Today</h2>
+          </div>
+
+          <div class="date-nav-right">
+            <button type="button" id="today-btn" class="btn btn-secondary date-btn" aria-label="Jump to today">
+              Today
+            </button>
+            <button type="button" id="next-day-btn" class="btn btn-secondary date-btn" aria-label="Go to next day">
+              Next Day &#8594;
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Daily Progress & Goal Summary Card -->
+      <section class="card summary-card" aria-labelledby="summary-heading">
+        <div class="summary-header">
+          <div>
+            <h2 id="summary-heading" class="card-title">Daily Summary</h2>
+            <p id="summary-status-text" class="summary-subtitle">Tracking calories toward your target</p>
+          </div>
+          <button type="button" id="toggle-goal-btn" class="btn btn-outline" aria-expanded="false" aria-controls="goal-edit-form">
+            Edit Goal
+          </button>
+        </div>
+
+        <!-- Inline Goal Edit Form (hidden by default) -->
+        <form id="goal-edit-form" class="goal-edit-form is-hidden" novalidate>
+          <div class="form-row goal-form-row">
+            <div class="form-field">
+              <label for="goal-input">Daily Target (kcal):</label>
+              <input type="number" id="goal-input" min="1" max="50000" step="1" required class="form-input" placeholder="e.g. 2000">
+            </div>
+            <div class="goal-form-actions">
+              <button type="submit" class="btn btn-primary">Save Goal</button>
+              <button type="button" id="cancel-goal-btn" class="btn btn-secondary">Cancel</button>
+            </div>
+          </div>
+          <div id="goal-error" class="field-error" role="alert" aria-live="polite"></div>
+        </form>
+
+        <!-- Calories Progress Indicator -->
+        <div class="calorie-stats-grid">
+          <div class="stat-box">
+            <span class="stat-label">Consumed</span>
+            <span id="total-consumed" class="stat-value">0</span>
+            <span class="stat-unit">kcal</span>
+          </div>
+          <div class="stat-divider" aria-hidden="true">/</div>
+          <div class="stat-box">
+            <span class="stat-label">Daily Target</span>
+            <span id="target-goal" class="stat-value">2000</span>
+            <span class="stat-unit">kcal</span>
+          </div>
+          <div class="stat-divider" aria-hidden="true">=</div>
+          <div class="stat-box">
+            <span id="remaining-label" class="stat-label">Remaining</span>
+            <span id="calories-remaining" class="stat-value stat-positive">2000</span>
+            <span class="stat-unit">kcal</span>
+          </div>
+        </div>
+
+        <div class="progress-container">
+          <div class="progress-bar-track">
+            <div id="progress-bar-fill" class="progress-bar-fill" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Calories consumed toward daily target" style="width: 0%;"></div>
+          </div>
+          <div class="progress-labels">
+            <span id="progress-percentage">0% of daily target</span>
+            <span id="progress-indicator-text">2000 kcal left</span>
+          </div>
+        </div>
+
+        <!-- Meal Subtotals breakdown -->
+        <div class="meal-subtotals-bar" aria-label="Calories by meal category">
+          <div class="meal-subtotal-item">
+            <span class="meal-badge badge-breakfast">Breakfast</span>
+            <span id="subtotal-breakfast" class="subtotal-val">0 kcal</span>
+          </div>
+          <div class="meal-subtotal-item">
+            <span class="meal-badge badge-lunch">Lunch</span>
+            <span id="subtotal-lunch" class="subtotal-val">0 kcal</span>
+          </div>
+          <div class="meal-subtotal-item">
+            <span class="meal-badge badge-dinner">Dinner</span>
+            <span id="subtotal-dinner" class="subtotal-val">0 kcal</span>
+          </div>
+          <div class="meal-subtotal-item">
+            <span class="meal-badge badge-snack">Snack</span>
+            <span id="subtotal-snack" class="subtotal-val">0 kcal</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Add / Edit Food Entry Form -->
+      <section class="card form-card" aria-labelledby="form-title">
+        <div class="card-header-row">
+          <h2 id="form-title" class="card-title">Add Food Entry</h2>
+          <span id="form-mode-badge" class="badge-mode is-hidden">Editing</span>
+        </div>
+
+        <form id="food-entry-form" novalidate>
+          <input type="hidden" id="entry-id-input" value="">
+
+          <div class="form-grid">
+            <!-- Food Name -->
+            <div class="form-field">
+              <label for="food-name-input">
+                Food Name <span class="required-star" aria-hidden="true">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="food-name-input" 
+                name="foodName" 
+                class="form-input" 
+                placeholder="e.g. Oatmeal with blueberries" 
+                autocomplete="off" 
+                required
+              >
+              <span id="food-name-error" class="field-error" role="alert" aria-live="polite"></span>
+            </div>
+
+            <!-- Calories -->
+            <div class="form-field">
+              <label for="calories-input">
+                Calories (kcal) <span class="required-star" aria-hidden="true">*</span>
+              </label>
+              <input 
+                type="number" 
+                id="calories-input" 
+                name="calories" 
+                class="form-input" 
+                placeholder="e.g. 350" 
+                min="1" 
+                max="20000" 
+                step="1" 
+                required
+              >
+              <span id="calories-error" class="field-error" role="alert" aria-live="polite"></span>
+            </div>
+
+            <!-- Meal Type -->
+            <div class="form-field">
+              <label for="meal-type-select">Meal Category</label>
+              <select id="meal-type-select" name="mealType" class="form-select">
+                <option value="breakfast">Breakfast</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+                <option value="snack">Snack</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" id="submit-entry-btn" class="btn btn-primary">
+              <span id="submit-btn-text">Add Food Entry</span>
+            </button>
+            <button type="button" id="cancel-edit-btn" class="btn btn-secondary is-hidden">
+              Cancel Edit
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Entries Grouped for the Day -->
+      <section class="card entries-card" aria-labelledby="entries-heading">
+        <div class="entries-header">
+          <div>
+            <h2 id="entries-heading" class="card-title">Daily Entries</h2>
+            <p id="entries-count-text" class="entries-subtitle">0 foods logged</p>
+          </div>
+        </div>
+
+        <!-- Empty State Container -->
+        <div id="empty-state" class="empty-state" role="status">
+          <div class="empty-state-icon" aria-hidden="true">&#127869;</div>
+          <h3 class="empty-state-title">No entries for this day</h3>
+          <p class="empty-state-message">You have not logged any meals for this date yet. Use the form above to add your first food entry.</p>
+        </div>
+
+        <!-- Entries List -->
+        <ul id="entries-list" class="entries-list is-hidden" aria-label="Logged food items for selected day">
+          <!-- Dynamically populated entries -->
+        </ul>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>Calorie Tracker &bull; All data saved locally in your browser</p>
+    </footer>
+  </div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
+
