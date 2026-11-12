@@ -33,3 +33,4 @@ start index.html
 ├── script.js     # State management, validation, and localStorage persistence
 └── README.md     # Project documentation
 ```
+

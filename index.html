@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calorie Tracker</title>
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
   <div class="app-layout">
     <!-- Header -->
@@ -28,7 +30,7 @@
           <button type="button" id="prev-day-btn" class="btn btn-secondary date-btn" aria-label="Go to previous day">
             &#8592; Prev Day
           </button>
-          
+
           <div class="date-display-wrapper">
             <label for="date-picker-input" class="sr-only">Choose date</label>
             <input type="date" id="date-picker-input" class="date-picker-input">
@@ -53,7 +55,8 @@
             <h2 id="summary-heading" class="card-title">Daily Summary</h2>
             <p id="summary-status-text" class="summary-subtitle">Tracking calories toward your target</p>
           </div>
-          <button type="button" id="toggle-goal-btn" class="btn btn-outline" aria-expanded="false" aria-controls="goal-edit-form">
+          <button type="button" id="toggle-goal-btn" class="btn btn-outline" aria-expanded="false"
+            aria-controls="goal-edit-form">
             Edit Goal
           </button>
         </div>
@@ -63,7 +66,8 @@
           <div class="form-row goal-form-row">
             <div class="form-field">
               <label for="goal-input">Daily Target (kcal):</label>
-              <input type="number" id="goal-input" min="1" max="50000" step="1" required class="form-input" placeholder="e.g. 2000">
+              <input type="number" id="goal-input" min="1" max="50000" step="1" required class="form-input"
+                placeholder="e.g. 2000">
             </div>
             <div class="goal-form-actions">
               <button type="submit" class="btn btn-primary">Save Goal</button>
@@ -96,7 +100,8 @@
 
         <div class="progress-container">
           <div class="progress-bar-track">
-            <div id="progress-bar-fill" class="progress-bar-fill" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Calories consumed toward daily target" style="width: 0%;"></div>
+            <div id="progress-bar-fill" class="progress-bar-fill" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+              aria-valuemax="100" aria-label="Calories consumed toward daily target" style="width: 0%;"></div>
           </div>
           <div class="progress-labels">
             <span id="progress-percentage">0% of daily target</span>
@@ -141,15 +146,8 @@
               <label for="food-name-input">
                 Food Name <span class="required-star" aria-hidden="true">*</span>
               </label>
-              <input 
-                type="text" 
-                id="food-name-input" 
-                name="foodName" 
-                class="form-input" 
-                placeholder="e.g. Oatmeal with blueberries" 
-                autocomplete="off" 
-                required
-              >
+              <input type="text" id="food-name-input" name="foodName" class="form-input"
+                placeholder="e.g. Oatmeal with blueberries" autocomplete="off" required>
               <span id="food-name-error" class="field-error" role="alert" aria-live="polite"></span>
             </div>
 
@@ -158,17 +156,8 @@
               <label for="calories-input">
                 Calories (kcal) <span class="required-star" aria-hidden="true">*</span>
               </label>
-              <input 
-                type="number" 
-                id="calories-input" 
-                name="calories" 
-                class="form-input" 
-                placeholder="e.g. 350" 
-                min="1" 
-                max="20000" 
-                step="1" 
-                required
-              >
+              <input type="number" id="calories-input" name="calories" class="form-input" placeholder="e.g. 350" min="1"
+                max="20000" step="1" required>
               <span id="calories-error" class="field-error" role="alert" aria-live="polite"></span>
             </div>
 
@@ -208,7 +197,8 @@
         <div id="empty-state" class="empty-state" role="status">
           <div class="empty-state-icon" aria-hidden="true">&#127869;</div>
           <h3 class="empty-state-title">No entries for this day</h3>
-          <p class="empty-state-message">You have not logged any meals for this date yet. Use the form above to add your first food entry.</p>
+          <p class="empty-state-message">You have not logged any meals for this date yet. Use the form above to add your
+            first food entry.</p>
         </div>
 
         <!-- Entries List -->
@@ -225,5 +215,5 @@
 
   <script src="script.js" defer></script>
 </body>
-</html>
 
+</html>
